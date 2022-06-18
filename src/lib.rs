@@ -73,8 +73,7 @@ mod tests {
         let result: Result<_, std::num::ParseIntError> = try_block! {
             let x = "1".parse::<i32>()?;
             let x = "2".parse::<i32>()? + x * 10;
-            let x = "3".parse::<i32>()? + x * 10;
-            x
+            "3".parse::<i32>()? + x * 10
         };
         assert_eq!(result, Ok(123));
     }
