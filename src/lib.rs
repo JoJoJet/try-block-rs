@@ -63,9 +63,8 @@ macro_rules! wrap_ok {
 #[macro_export]
 macro_rules! try_block {
     { $($token:tt)* } => {{
-        ( || $crate::wrap_ok!(
-            { $($token)* }
-        ))()
+        let f = || $crate::wrap_ok!({ $($token)* });
+        f()
     }}
 }
 
