@@ -1,7 +1,0 @@
-[package]
-name = "simple"
-version = "0.1.0"
-authors = ["Mike Lubinets <lubinetsm@yandex.ru>"]
-
-[dependencies]
-try-block = { path = "../../" }
