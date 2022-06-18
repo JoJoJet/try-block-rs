@@ -1,8 +1,11 @@
 [package]
-name = "try-block"
+name = "try-blocks"
+description = "macro to emulate the upcoming `try` block feature on stable"
 version = "0.1.0"
-authors = ["Mike Lubinets <lubinetsm@yandex.ru>"]
+edition = "2021"
+authors = ["Mike Lubinets <lubinetsm@yandex.ru>", "JoJoJet <joe102000@gmail.com"]
 license = "MIT"
-description = "macro that makes your error-catching blocks (appear) labmdaless"
+repository = "https://github.com/JoJoJet/try-blocks"
+keywords = ["try", "control-flow", "catch", "throw"]
 
 [dependencies]
