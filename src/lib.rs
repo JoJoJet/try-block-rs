@@ -35,6 +35,9 @@ macro_rules! wrap_ok {
 /// };
 /// # assert_eq!(y, Ok(3));
 /// ```
+/// If you know that a block will have a specific type, it may aid type inference to use
+/// the macros [`try_opt`], [`try_res`], and [`try_cf`].
+///
 /// ## Alternative
 /// The only other way to emulate try blocks is with closures, which is very ugly.
 ///
@@ -63,9 +66,40 @@ macro_rules! wrap_ok {
 #[macro_export]
 macro_rules! try_block {
     { $($token:tt)* } => {{
-        let f = || $crate::wrap_ok!({ $($token)* });
+        #[allow(unused_mut)]
+        let mut f = || $crate::wrap_ok!({ $($token)* });
         f()
     }}
+}
+
+/// Like [`try_block`], but specificially for [`Option`]. This aids type inference.
+#[macro_export]
+macro_rules! try_opt {
+    { $($token:tt)* } => {{
+        #[allow(unused_mut)]
+        let mut f = || ::core::option::Option::Some({ $($token)* });
+        f()
+    }};
+}
+
+/// Like [`try_block`], but specificially for [`Result`]]. This aids type inference.
+#[macro_export]
+macro_rules! try_res {
+    { $($token:tt)* } => {{
+        #[allow(unused_mut)]
+        let mut f = || ::core::result::Result::Ok({ $($token)* });
+        f()
+    }};
+}
+
+/// Like [`try_block`], but specificially for [`ControlFlow`]. This aids type inference.
+#[macro_export]
+macro_rules! try_cf {
+    { $($token:tt)* } => {
+        #[allow(unused_mut)]
+        let mut f = || ::core::ops::ControlFlow::Continue({ $($token)* });
+        f()
+    };
 }
 
 #[cfg(test)]
@@ -88,5 +122,20 @@ mod tests {
                 "400".parse::<i32>().ok()? + "20".parse::<i32>().ok()? * "6".parse::<i32>().ok()?
             },
         );
+    }
+
+    #[test]
+    fn named() {
+        try_opt! {
+            let x = "400".parse::<i32>().ok()?;
+            let x = x.checked_add(6_900_000)?;
+            assert_eq!(x, 6_900_400);
+        }
+        .unwrap();
+
+        let res: Result<_, ()> = try_res! {
+            1
+        };
+        assert_eq!(res, Ok(1));
     }
 }
