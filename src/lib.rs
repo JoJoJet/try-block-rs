@@ -1,3 +1,4 @@
+#![no_std]
 //! Macro for stable try blocks that performs Ok-wrapping, and otherwise tries to
 //! achieve feature parity with RFC 1859. The macro is compatible with any type
 //! that implements the unstable `Any` trait through the use of type magic.
@@ -5,6 +6,8 @@
 //! This crate is a fork of `try-block`, which has not been updated in four years at
 //! the time of writing this. This fork adds Ok-wrapping and the promise of future
 //! updates.
+//!
+//! This crate is `no_std` compatible.
 
 /// Macro for ok-wrapping any `Try` type. This works on stable through dark type magic.
 ///
@@ -17,7 +20,7 @@
 #[macro_export]
 macro_rules! wrap_ok {
     ($e:expr) => {{
-        ::std::iter::empty().try_fold($e, |_, x: std::convert::Infallible| match x {})
+        ::core::iter::empty().try_fold($e, |_, x: core::convert::Infallible| match x {})
     }};
 }
 
@@ -70,7 +73,7 @@ macro_rules! try_block {
 mod tests {
     #[test]
     fn parse_sum() {
-        let result: Result<_, std::num::ParseIntError> = try_block! {
+        let result: Result<_, core::num::ParseIntError> = try_block! {
             let x = "1".parse::<i32>()?;
             let x = "2".parse::<i32>()? + x * 10;
             "3".parse::<i32>()? + x * 10
