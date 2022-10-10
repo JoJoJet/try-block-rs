@@ -6,6 +6,6 @@ edition = "2021"
 authors = ["Mike Lubinets <lubinetsm@yandex.ru>", "JoJoJet <joe102000@gmail.com"]
 license = "MIT"
 repository = "https://github.com/JoJoJet/try-blocks"
-keywords = ["try", "control-flow", "catch", "throw", "no_std"]
+keywords = ["deprecated"]
 
 [dependencies]
